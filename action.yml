@@ -10,7 +10,7 @@ inputs:
   influxdb_start:
     description: 'Set to false if you only need to use the cli tools without a locally running InfluxDB instance. If this is false, you can ignore the init parameters.'
     required: false
-    default: true
+    default: 'true'
   influxdb_org:
     description: 'The initial Organization of the InfluxDB instance.'
     required: false
