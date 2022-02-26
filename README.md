@@ -48,4 +48,5 @@ steps:
       influxdb_user: ci_user
       influxdb_password: password
       influxdb_bucket: dummy
+      influxdb_token: apitoken
 ```
