@@ -27,6 +27,9 @@ inputs:
     description: 'The initial Bucket of the InfluxDB instance.'
     required: false
     default: 'bucket'
+  influxdb_token:
+    description: 'The initial API Token of the InfluxDB instance.'
+    required: false
 runs:
   using: "composite"
   steps:
@@ -42,6 +45,8 @@ runs:
         export INFLUXDB_USER=${{inputs.influxdb_user}}
         export INFLUXDB_PASSWORD=${{inputs.influxdb_password}}
         export INFLUXDB_BUCKET=${{inputs.influxdb_bucket}}
+        export INFLUXDB_TOKEN=${{inputs.influxdb_token}}
         ${{ github.action_path }}/setup-influxdb.sh
         unset INFLUXDB_PASSWORD
+        unset INFLUXDB_TOKEN
       shell: bash
