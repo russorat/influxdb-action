@@ -1,4 +1,4 @@
-name: 'InfluxDB Action Fix for 2.6.0'
+name: 'InfluxDB Action'
 description: 'Install and configure InfluxDB and the InfluxDB CLI.'
 branding:
   icon: 'database'
