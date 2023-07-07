@@ -9,21 +9,27 @@ then
 else
   export INFLUXDB_DOWNLOAD_PATH="https://dl.influxdata.com/influxdb/releases"
 fi
+
+echo "Thre Server downloading "
 wget -q $INFLUXDB_DOWNLOAD_PATH/influxdb2-$INFLUXDB_VERSION-linux-amd64.tar.gz
 tar xvfz influxdb2-$INFLUXDB_VERSION-linux-amd64.tar.gz
-sudo cp influxdb2_linux_amd64/influxd /usr/local/bin/
+cp influxdb2_linux_amd64/influxd /usr/local/bin/
 rm -r influxdb2_linux_amd64/
-
+echo "Thre Client downloading "
 wget -q $INFLUXDB_DOWNLOAD_PATH/influxdb2-client-$INFLUXDB_VERSION-linux-amd64.tar.gz
-tar xvfz influxdb2-client-$INFLUXDB_VERSION-linux-amd64.tar.gz
-
-if [  -x "influxdb2-client-$INFLUXDB_VERSION-linux-amd64/influx" ];then  
-sudo cp influxdb2-client-$INFLUXDB_VERSION-linux-amd64/influx /usr/local/bin/
-rm -r influxdb2-client-$INFLUXDB_VERSION-linux-amd64/
+mkdir  /tmp/influxdb2-client/ 
+tar xvfz influxdb2-client-$INFLUXDB_VERSION-linux-amd64.tar.gz -C /tmp/influxdb2-client/
+echo "The client in subdir?"
+if [  -x "/tmp/influxdb2-client/influxdb2-client-$INFLUXDB_VERSION-linux-amd64/influx" ];then  
+echo "The client in subdir."
+cp /tmp/influxdb2-client/influxdb2-client-$INFLUXDB_VERSION-linux-amd64/influx /usr/local/bin/
+rm -r /tmp/influxdb2-client/
 fi
-
-if [  -x "influx" ];then  
-sudo cp influx /usr/local/bin/
+echo "The client not in subdir?"
+if [  -x "/tmp/influxdb2-client/influx" ];then  
+echo "The client not in subdir."
+cp /tmp/influxdb2-client/influx /usr/local/bin/
+rm -r /tmp/influxdb2-client/
 fi
 
 cd -
