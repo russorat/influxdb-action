@@ -11,7 +11,7 @@ else
 fi
 
 echo "Thre Server downloading "
-wget -q $INFLUXDB_DOWNLOAD_PATH/influxdb2-$INFLUXDB_VERSION-linux-amd64.tar.gz
+wget -q $INFLUXDB_DOWNLOAD_PATH/influxdb2_$INFLUXDB_VERSION-linux-amd64.tar.gz
 tar xvfz influxdb2-$INFLUXDB_VERSION-linux-amd64.tar.gz
 cp influxdb2_linux_amd64/influxd /usr/local/bin/
 rm -r influxdb2_linux_amd64/
