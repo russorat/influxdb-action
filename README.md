@@ -2,7 +2,7 @@
 
 This action downloads, installs, and configures an InfluxDB OSS instance and CLI tooling that can be used in your automation.
 
-This downloads the specified version (or `latest` or `nightly`), and adds `influxd` and `influx` commands to `/usr/local/bin`.
+This downloads the specified version (or `latest` or `nightly`), and adds `influxd` and `influx` commands to `${GITHUB_PATH}`.
 
 # Usage
 
@@ -12,9 +12,9 @@ See [action.yml](action.yml)
 ```yaml
 steps:
   - name: Check out repo
-    uses: actions/checkout@v2
+    uses: actions/checkout@v4
   - name: Setup InfluxDB
-    uses: influxdata/influxdb-action@v3
+    uses: influxdata/influxdb-action@v4
     with:
       influxdb_version: latest
       influxdb_org: influxdata
@@ -27,11 +27,11 @@ steps:
 ```yaml
 steps:
   - name: Check out repo
-    uses: actions/checkout@v2
+    uses: actions/checkout@v4
   - name: Setup InfluxDB
-    uses: influxdata/influxdb-action@v3
+    uses: influxdata/influxdb-action@v4
     with:
-      influxdb_version: latest
+      influxdb_version: v2.7.6
       influxdb_start: false
 ```
 
@@ -39,13 +39,14 @@ steps:
 ```yaml
 steps:
   - name: Check out repo
-    uses: actions/checkout@v2
+    uses: actions/checkout@v4
   - name: Setup InfluxDB
-    uses: influxdata/influxdb-action@v3
+    uses: influxdata/influxdb-action@v4
     with:
       influxdb_version: 2.0.7
       influxdb_org: influxdata
       influxdb_user: ci_user
       influxdb_password: password
       influxdb_bucket: dummy
+      influxdb_token: apitoken
 ```
