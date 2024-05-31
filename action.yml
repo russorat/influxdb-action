@@ -7,36 +7,63 @@ inputs:
   influxdb_version:
     description: 'Sets the version of InfluxDB to use (for example: 2.0.7). See https://portal.influxdata.com/downloads/ for versions. latest and nightly are also supported.'
     required: true
+    type: boolean
   influxdb_start:
     description: 'Set to false if you only need to use the cli tools without a locally running InfluxDB instance. If this is false, you can ignore the init parameters.'
     required: false
-    default: 'true'
+    type: boolean
+    default: true
+  influxdb_timeout:
+    description: 'Amount of time to try to start InfluxDB, defaults to 60 seconds.'
+    required: false
+    type: number
+    default: 60
   influxdb_org:
     description: 'The initial Organization of the InfluxDB instance.'
     required: false
+    type: string
     default: 'organization'
   influxdb_user:
     description: 'The initial User of the InfluxDB instance.'
     required: false
+    type: string
     default: 'user'
   influxdb_password:
     description: 'The initial Password of the InfluxDB instance.'
     required: false
+    type: string
     default: 'password'
   influxdb_bucket:
     description: 'The initial Bucket of the InfluxDB instance.'
     required: false
+    type: string
     default: 'bucket'
   influxdb_token:
     description: 'The initial API Token of the InfluxDB instance.'
     required: false
+    type: string
+  os:
+    description: "The OS of the runner (Could be needed if selfhosted), default choices are: linux, macos, windows. Default or unknown strings will check the runner context and if it is a Github runner, it will decide from there."
+    required: false
+    default: ""
+    type: string
+    options:
+      - ubuntu
+      - macos
+      - windows
+      - linux
+      - linux-arm
 runs:
   using: "composite"
   steps:
     - name: Download and Install InfluxDB
       run: |
-        export INFLUXDB_VERSION=${{inputs.influxdb_version}}
-        ${{ github.action_path }}/install-influxdb.sh
+        export INFLUXDB_VERSION="${{inputs.influxdb_version}}"
+        export RUNNER_OS="${{runner.os}}"
+        export RUNNER_ARCH="${{runner.arch}}"
+        export INFLUXDB_TEMP_PATH=${{runner.temp}}
+
+        ${GITHUB_ACTION_PATH}/install-influxdb.sh
       shell: bash
     - name: Configure InfluxDB
       run: |
@@ -46,7 +73,8 @@ runs:
         export INFLUXDB_PASSWORD=${{inputs.influxdb_password}}
         export INFLUXDB_BUCKET=${{inputs.influxdb_bucket}}
         export INFLUXDB_TOKEN=${{inputs.influxdb_token}}
-        ${{ github.action_path }}/setup-influxdb.sh
+        export INFLUXDB_TIMEOUT=${{inputs.influxdb_timeout}}
+        ${GITHUB_ACTION_PATH}/setup-influxdb.sh
         unset INFLUXDB_PASSWORD
         unset INFLUXDB_TOKEN
       shell: bash

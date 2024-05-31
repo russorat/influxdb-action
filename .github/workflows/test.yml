@@ -1,0 +1,41 @@
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ] 
+
+name: Test PR
+
+defaults:
+  run:
+    shell: bash
+
+permissions: write-all
+
+
+jobs:
+  build:
+    name: Build and Test  
+    strategy:
+      fail-fast: false # Let the other runners go even if we have a failure on 1
+      matrix:
+        os: [ windows-latest, ubuntu-latest, macos-latest]
+        influxdb-version: [nightly, latest, 'v2.7.6', '2.7.5', 'v2.7.4', '2.6.1', 'v2.6.0', '2.5.1', 'v2.5.0']
+        exclude:
+          - os: windows-latest
+            influxdb-version: nightly
+        
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Start Influx Server
+        uses: ./
+        with:
+          influxdb_version: ${{ matrix.influxdb-version }}
+      
+      - name:
+        run: |
+          influxd version
+          influx version
